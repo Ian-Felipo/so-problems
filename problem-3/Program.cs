@@ -61,13 +61,9 @@ class Program
                 
                 _dogCountMutex.ReleaseMutex();
                 
-                _roomStateMutex.ReleaseMutex();
-                
                 Console.WriteLine($"O CACHORRO {id} entrou na sala de repouso, au au au ...");
                 
                 Thread.Sleep(restDuration);
-                
-                _roomStateMutex.WaitOne();
                 
                 _dogCountMutex.WaitOne();
 
@@ -118,13 +114,9 @@ class Program
                 
                 _catCountMutex.ReleaseMutex();
                 
-                _roomStateMutex.ReleaseMutex();
-                
                 Console.WriteLine($"O GATO {id} entrou na sala de repouso, meow meow meow ...");
                 
                 Thread.Sleep(restDuration);
-                
-                _roomStateMutex.WaitOne();
                 
                 _catCountMutex.WaitOne();
 
@@ -132,7 +124,7 @@ class Program
                 
                 if (_catCount == 0)
                 {
-                    _roomState = ERoomState.Cats;
+                    _roomState = ERoomState.Empty;
                 }
                 
                 _catCountMutex.ReleaseMutex();
