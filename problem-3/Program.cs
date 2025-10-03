@@ -5,14 +5,10 @@ namespace Problem_3;
 
 class Program
 {
-    private static ERoomState _roomState = ERoomState.Empty; 
-    private static Mutex _roomStateMutex = new Mutex();
+    private static ERoomState _roomState = ERoomState.Empty;
+    private static Mutex _roomStateMutex = new();
     private static int _dogCount;
-    private static Mutex _dogCountMutex = new Mutex();
     private static int _catCount;
-    private static Mutex _catCountMutex = new Mutex();
-    
-    private static Mutex _consoleMutex = new Mutex();
     
     public static void Main(string[] args)
     {
@@ -46,12 +42,10 @@ class Program
         {
             _roomStateMutex.WaitOne();
             
-            Write($"O CACHORRO {id} está tentando entrar na sala de repouso, toc toc toc ...");
+            Console.WriteLine($"\nO CACHORRO {id} está tentando entrar na sala de repouso, toc toc toc ...");
             
             if (_roomState != ERoomState.Cats)
             {
-                _dogCountMutex.WaitOne();
-
                 _dogCount++;
                 
                 if (_dogCount == 1)
@@ -59,9 +53,7 @@ class Program
                     _roomState = ERoomState.Dogs;
                 }
                 
-                Write($"O CACHORRO {id} entrou na sala de repouso, au au au ...");
-                
-                _dogCountMutex.ReleaseMutex();
+                Console.WriteLine($"\nO CACHORRO {id} entrou na sala de repouso ...");
                 
                 _roomStateMutex.ReleaseMutex();
                 
@@ -69,8 +61,6 @@ class Program
                 
                 _roomStateMutex.WaitOne();
                 
-                _dogCountMutex.WaitOne();
-
                 _dogCount--;
                 
                 if (_dogCount == 0)
@@ -78,9 +68,7 @@ class Program
                     _roomState = ERoomState.Empty;
                 }
                 
-                Write($"O CACHORRO {id} saiu da sala de repouso, au au au ...");
-                
-                _dogCountMutex.ReleaseMutex();
+                Console.WriteLine($"\nO CACHORRO {id} saiu da sala de repouso ...");
                 
                 _roomStateMutex.ReleaseMutex();
                 
@@ -90,12 +78,6 @@ class Program
             _roomStateMutex.ReleaseMutex(); 
             
             Thread.Yield(); 
-            
-            Random random = new Random();
-            
-            var delay = random.Next(500, 2000);
-            
-            Thread.Sleep(delay);
         }
     }
 
@@ -105,11 +87,10 @@ class Program
         {
             _roomStateMutex.WaitOne();
     
-            Write($"O GATO {id} está tentando entrar na sala de repouso, toc toc toc ...");
+            Console.WriteLine($"\nO GATO {id} está tentando entrar na sala de repouso, toc toc toc ...");
             
             if (_roomState != ERoomState.Dogs)
             {
-                _catCountMutex.WaitOne();
 
                 _catCount++;
                 
@@ -118,9 +99,7 @@ class Program
                     _roomState = ERoomState.Cats;
                 }
                 
-                Write($"O GATO {id} entrou na sala de repouso, meow meow meow ...");
-                
-                _catCountMutex.ReleaseMutex();
+                Console.WriteLine($"\nO GATO {id} entrou na sala de repouso ...");
                 
                 _roomStateMutex.ReleaseMutex();
                 
@@ -128,8 +107,6 @@ class Program
                 
                 _roomStateMutex.WaitOne();
                 
-                _catCountMutex.WaitOne();
-
                 _catCount--;
                 
                 if (_catCount == 0)
@@ -137,9 +114,7 @@ class Program
                     _roomState = ERoomState.Empty;
                 }
                 
-                Write($"O GATO {id} saiu da sala de repouso, meow meow meow ...");
-                
-                _catCountMutex.ReleaseMutex();
+                Console.WriteLine($"\nO GATO {id} saiu da sala de repouso ...");
                 
                 _roomStateMutex.ReleaseMutex();
                 
@@ -149,19 +124,6 @@ class Program
             _roomStateMutex.ReleaseMutex(); 
             
             Thread.Yield(); 
-  
-            Random random = new Random();
-            
-            var delay = random.Next(500, 2000);
-            
-            Thread.Sleep(delay);
         }
-    }
-
-    public static void Write(string message)
-    {
-        _consoleMutex.WaitOne();
-        Console.WriteLine(message);
-        _consoleMutex.ReleaseMutex();
     }
 }
