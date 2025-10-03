@@ -47,7 +47,6 @@ class Program
 
             foreach (var animal in group)
             {
-
                 var delay = TimeSpan.FromSeconds(animal.ArrivalTime) - (DateTime.UtcNow - startTime);
                 
                 if (delay > TimeSpan.Zero)
@@ -73,14 +72,14 @@ class Program
     public static void Dog(string id, int restDuration)
     {
         Console.WriteLine($"O CACHORRO {id} entrou na sala de repouso ...");
-        Thread.Sleep(restDuration);
+        Thread.Sleep(restDuration * 1000);
         Console.WriteLine($"O CACHORRO {id} saiu da sala de repouso ...");
     }
 
     public static void Cat(string id, int restDuration)
     {
         Console.WriteLine($"O GATO {id} entrou na sala de repouso ...");
-        Thread.Sleep(restDuration);
+        Thread.Sleep(restDuration * 1000);
         Console.WriteLine($"O GATO {id} saiu da sala de repouso ...");
     }
 }
