@@ -1,0 +1,15 @@
+/home/Ian/dev/so-problems/problem-3/bin/Debug/net9.0/problem-3
+/home/Ian/dev/so-problems/problem-3/bin/Debug/net9.0/problem-3.deps.json
+/home/Ian/dev/so-problems/problem-3/bin/Debug/net9.0/problem-3.runtimeconfig.json
+/home/Ian/dev/so-problems/problem-3/bin/Debug/net9.0/problem-3.dll
+/home/Ian/dev/so-problems/problem-3/bin/Debug/net9.0/problem-3.pdb
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.GeneratedMSBuildEditorConfig.editorconfig
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.AssemblyInfoInputs.cache
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.AssemblyInfo.cs
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.csproj.CoreCompileInputs.cache
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.sourcelink.json
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.dll
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/refint/problem-3.dll
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.pdb
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/problem-3.genruntimeconfig.cache
+/home/Ian/dev/so-problems/problem-3/obj/Debug/net9.0/ref/problem-3.dll
