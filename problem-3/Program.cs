@@ -57,7 +57,7 @@ class Program
                 
                 _roomStateMutex.ReleaseMutex();
                 
-                Thread.Sleep(restDuration);
+                Thread.Sleep(restDuration * 1000);
                 
                 _roomStateMutex.WaitOne();
                 
@@ -91,7 +91,6 @@ class Program
             
             if (_roomState != ERoomState.Dogs)
             {
-
                 _catCount++;
                 
                 if (_catCount == 1)
@@ -103,7 +102,7 @@ class Program
                 
                 _roomStateMutex.ReleaseMutex();
                 
-                Thread.Sleep(restDuration);
+                Thread.Sleep(restDuration * 1000);
                 
                 _roomStateMutex.WaitOne();
                 
