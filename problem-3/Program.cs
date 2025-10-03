@@ -5,74 +5,163 @@ namespace Problem_3;
 
 class Program
 {
+    private static ERoomState _roomState = ERoomState.Empty; 
+    private static Mutex _roomStateMutex = new Mutex();
+    private static int _dogCount;
+    private static Mutex _dogCountMutex = new Mutex();
+    private static int _catCount;
+    private static Mutex _catCountMutex = new Mutex();
+    
+    private static Mutex _consoleMutex = new Mutex();
+    
     public static void Main(string[] args)
     {
         var path = args[0];
-        
         var challengeJson = File.ReadAllText(path);
-        
         var challenge = JsonSerializer.Deserialize<Challenge>(challengeJson);
-        
         var animals = challenge!.Workload.Animals;
-        
-        var animalsOrdainedByArrivalTime = animals.OrderBy(a => a.ArrivalTime).ToList();
-
-        var speciesGroups = new List<List<Animal>>();
-        List<Animal>? currentGroup = null;
-        string? currentSpecies = null;
-
-        foreach (var animal in animalsOrdainedByArrivalTime)
-        {
-            if (currentGroup == null || animal.Species != currentSpecies)
-            {
-                currentGroup = new List<Animal>();
-                speciesGroups.Add(currentGroup);
-                currentSpecies = animal.Species;
-            }
-            currentGroup.Add(animal);
-        }
-
+        var animalsSortedByArrivalTime = animals.OrderBy(animal => animal.ArrivalTime);
         var startTime = DateTime.UtcNow;
         
-        foreach (var group in speciesGroups)
+        foreach (var animal in animalsSortedByArrivalTime)
         {
-            var threads = new List<Thread>();
+            var delay = TimeSpan.FromSeconds(animal.ArrivalTime) - (DateTime.UtcNow - startTime);
 
-            foreach (var animal in group)
+            if (delay > TimeSpan.FromSeconds(0))
             {
-
-                var delay = TimeSpan.FromSeconds(animal.ArrivalTime) - (DateTime.UtcNow - startTime);
-                if (delay > TimeSpan.Zero)
-                {
-                    Thread.Sleep(delay);
-                }
-
-                var thread = animal.Species.Equals("dog", StringComparison.OrdinalIgnoreCase)
-                    ? new Thread(() => Dog(animal.Id, animal.ArrivalTime))
-                    : new Thread(() => Cat(animal.Id, animal.ArrivalTime));
-
-                threads.Add(thread);
-                thread.Start();
+                Thread.Sleep(delay);
             }
-
-            foreach (var t in threads)
-            {
-                t.Join();
-            }
+            
+            var thread = animal.Species.Equals("dog", StringComparison.OrdinalIgnoreCase)
+                ? new Thread(() => Dog(animal.Id, animal.ArrivalTime))
+                : new Thread(() => Cat(animal.Id, animal.ArrivalTime));
+            
+            thread.Start();
         }
     }
 
     public static void Dog(string id, int restDuration)
     {
-        Console.WriteLine($"O CACHORRO {id} entrou na sala de repouso, au au au ...");
-        Thread.Sleep(restDuration);
-        Console.WriteLine($"O CACHORRO {id} saiu da sala de repouso, au au au ...");
+        while (true)
+        {
+            _roomStateMutex.WaitOne();
+            
+            Write($"O CACHORRO {id} está tentando entrar na sala de repouso, toc toc toc ...");
+            
+            if (_roomState != ERoomState.Cats)
+            {
+                _dogCountMutex.WaitOne();
+
+                _dogCount++;
+                
+                if (_dogCount == 1)
+                {
+                    _roomState = ERoomState.Dogs;
+                }
+                
+                Write($"O CACHORRO {id} entrou na sala de repouso, au au au ...");
+                
+                _dogCountMutex.ReleaseMutex();
+                
+                _roomStateMutex.ReleaseMutex();
+                
+                Thread.Sleep(restDuration);
+                
+                _roomStateMutex.WaitOne();
+                
+                _dogCountMutex.WaitOne();
+
+                _dogCount--;
+                
+                if (_dogCount == 0)
+                {
+                    _roomState = ERoomState.Empty;
+                }
+                
+                Write($"O CACHORRO {id} saiu da sala de repouso, au au au ...");
+                
+                _dogCountMutex.ReleaseMutex();
+                
+                _roomStateMutex.ReleaseMutex();
+                
+                break; 
+            }
+    
+            _roomStateMutex.ReleaseMutex(); 
+            
+            Thread.Yield(); 
+            
+            Random random = new Random();
+            
+            var delay = random.Next(500, 2000);
+            
+            Thread.Sleep(delay);
+        }
     }
 
     public static void Cat(string id, int restDuration)
     {
-        Console.WriteLine($"O GATO {id} entrou na sala de repouso, meow meow meow ...");
-        Thread.Sleep(restDuration);
-        Console.WriteLine($"O GATO {id} saiu da sala de repouso, meow meow meow ...");
+        while (true)
+        {
+            _roomStateMutex.WaitOne();
+    
+            Write($"O GATO {id} está tentando entrar na sala de repouso, toc toc toc ...");
+            
+            if (_roomState != ERoomState.Dogs)
+            {
+                _catCountMutex.WaitOne();
+
+                _catCount++;
+                
+                if (_catCount == 1)
+                {
+                    _roomState = ERoomState.Cats;
+                }
+                
+                Write($"O GATO {id} entrou na sala de repouso, meow meow meow ...");
+                
+                _catCountMutex.ReleaseMutex();
+                
+                _roomStateMutex.ReleaseMutex();
+                
+                Thread.Sleep(restDuration);
+                
+                _roomStateMutex.WaitOne();
+                
+                _catCountMutex.WaitOne();
+
+                _catCount--;
+                
+                if (_catCount == 0)
+                {
+                    _roomState = ERoomState.Empty;
+                }
+                
+                Write($"O GATO {id} saiu da sala de repouso, meow meow meow ...");
+                
+                _catCountMutex.ReleaseMutex();
+                
+                _roomStateMutex.ReleaseMutex();
+                
+                break; 
+            }
+    
+            _roomStateMutex.ReleaseMutex(); 
+            
+            Thread.Yield(); 
+  
+            Random random = new Random();
+            
+            var delay = random.Next(500, 2000);
+            
+            Thread.Sleep(delay);
+        }
+    }
+
+    public static void Write(string message)
+    {
+        _consoleMutex.WaitOne();
+        Console.WriteLine(message);
+        _consoleMutex.ReleaseMutex();
     }
 }
