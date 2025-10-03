@@ -8,13 +8,9 @@ class Program
     public static void Main(string[] args)
     {
         var path = args[0];
-        
         var challengeJson = File.ReadAllText(path);
-        
         var challenge = JsonSerializer.Deserialize<Challenge>(challengeJson);
-        
         var animals = challenge!.Workload.Animals;
-        
         var animalsOrdainedByArrivalTime = animals.OrderBy(a => a.ArrivalTime).ToList();
 
         var speciesGroups = new List<List<Animal>>();
@@ -25,13 +21,24 @@ class Program
         {
             if (currentGroup == null || animal.Species != currentSpecies)
             {
+                if (currentGroup != null)
+                { 
+                    speciesGroups.Add(currentGroup);
+                }
+                
                 currentGroup = new List<Animal>();
-                speciesGroups.Add(currentGroup);
+                
                 currentSpecies = animal.Species;
             }
+            
             currentGroup.Add(animal);
         }
 
+        if (currentGroup != null)
+        {
+            speciesGroups.Add(currentGroup);
+        }
+        
         var startTime = DateTime.UtcNow;
         
         foreach (var group in speciesGroups)
@@ -42,6 +49,7 @@ class Program
             {
 
                 var delay = TimeSpan.FromSeconds(animal.ArrivalTime) - (DateTime.UtcNow - startTime);
+                
                 if (delay > TimeSpan.Zero)
                 {
                     Thread.Sleep(delay);
@@ -64,15 +72,15 @@ class Program
 
     public static void Dog(string id, int restDuration)
     {
-        Console.WriteLine($"O CACHORRO {id} entrou na sala de repouso, au au au ...");
+        Console.WriteLine($"O CACHORRO {id} entrou na sala de repouso ...");
         Thread.Sleep(restDuration);
-        Console.WriteLine($"O CACHORRO {id} saiu da sala de repouso, au au au ...");
+        Console.WriteLine($"O CACHORRO {id} saiu da sala de repouso ...");
     }
 
     public static void Cat(string id, int restDuration)
     {
-        Console.WriteLine($"O GATO {id} entrou na sala de repouso, meow meow meow ...");
+        Console.WriteLine($"O GATO {id} entrou na sala de repouso ...");
         Thread.Sleep(restDuration);
-        Console.WriteLine($"O GATO {id} saiu da sala de repouso, meow meow meow ...");
+        Console.WriteLine($"O GATO {id} saiu da sala de repouso ...");
     }
 }

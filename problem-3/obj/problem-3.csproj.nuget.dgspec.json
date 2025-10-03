@@ -1,25 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "/home/Ian/dev/so-problems/problem-3/problem-3.csproj": {}
+    "/home/ian_felippo/dev/so-problems/problem-3/problem-3.csproj": {}
   },
   "projects": {
-    "/home/Ian/dev/so-problems/problem-3/problem-3.csproj": {
+    "/home/ian_felippo/dev/so-problems/problem-3/problem-3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/Ian/dev/so-problems/problem-3/problem-3.csproj",
+        "projectUniqueName": "/home/ian_felippo/dev/so-problems/problem-3/problem-3.csproj",
         "projectName": "problem-3",
-        "projectPath": "/home/Ian/dev/so-problems/problem-3/problem-3.csproj",
-        "packagesPath": "/home/Ian/.nuget/packages/",
-        "outputPath": "/home/Ian/dev/so-problems/problem-3/obj/",
+        "projectPath": "/home/ian_felippo/dev/so-problems/problem-3/problem-3.csproj",
+        "packagesPath": "/home/ian_felippo/.nuget/packages/",
+        "outputPath": "/home/ian_felippo/dev/so-problems/problem-3/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/Ian/.nuget/NuGet/NuGet.Config"
+          "/home/ian_felippo/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
+          "/usr/lib/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,7 +39,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -59,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/Ian/.dotnet/sdk/9.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/9.0.109/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
